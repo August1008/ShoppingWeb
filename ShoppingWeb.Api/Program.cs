@@ -1,3 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+using ShoppingWeb.Api.DataContext;
+using ShoppingWeb.Api.Repositories;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContextPool<ShoppingWebDataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ProductionConnection"))
+);
+
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 var app = builder.Build();
 
 app.UseSwagger();
