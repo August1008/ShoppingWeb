@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingWeb.Web", "Shopping
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingWeb.Api", "ShoppingWeb.Api\ShoppingWeb.Api.csproj", "{AF578C1F-8839-4432-81CD-A6AD327C6CA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingWeb.Models", "ShoppingWeb.Models\ShoppingWeb.Models.csproj", "{D7E7ABE8-54B3-4C70-9CDB-BD6BF716655D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShoppingWeb.Models", "ShoppingWeb.Models\ShoppingWeb.Models.csproj", "{D7E7ABE8-54B3-4C70-9CDB-BD6BF716655D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
