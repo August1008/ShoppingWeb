@@ -1,0 +1,25 @@
+﻿@page "/"
+@using ShoppingWeb.Web.Pages.Products
+@inherits HomeBase
+
+@if (Products == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <h3 class="mb-3">Products</h3>
+    var productGroupByCategories = from p in Products
+                                   group p by p.CategoryId into newGroup
+                                   orderby newGroup.Key
+                                   select newGroup;
+    @foreach(var productGroup in productGroupByCategories)
+    {
+        <h4 class="mb-3">
+            @productGroup.FirstOrDefault().Category
+         </h4>
+        <Products Products="productGroup.Where(p => p.CategoryId == productGroup.Key)"></Products>
+        <hr class="mb-3"/>
+    }
+
+}

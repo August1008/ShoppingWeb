@@ -1,6 +1,4 @@
-﻿@page "/"
-@inherits ProductsBase
-
+﻿@inherits ProductsBase
 
 @if(Products == null)
 {
@@ -8,7 +6,6 @@
 }
 else
 {
-    <h3 class="mb-3">Products</h3>
     var productCount = Products.Count();
 
     const int itemsPerRow = 4;
