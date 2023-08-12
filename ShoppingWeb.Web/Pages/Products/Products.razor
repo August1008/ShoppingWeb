@@ -25,9 +25,9 @@ else
                                 <img class="img-thumbnail" src="@product.ImageUrl">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">@product.Name</h5>
-                                    <p class="card-text">
+                                    <marquee class="card-text" direction="right" onmouseover="this.stop()" onmouseout="this.start()">
                                         <b>@product.Price.ToString("C")</b>
-                                    </p>
+                                    </marquee>
                                 </div>
                             </div>
                         </a>
