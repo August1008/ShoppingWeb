@@ -1,0 +1,28 @@
+﻿@page "/Product/{productId:int}"
+
+@inherits ProductDetailBase
+
+@if(Product == null && string.IsNullOrEmpty(Error))
+{
+    <h3>loading product...</h3>
+}
+else if(Error != null)
+{
+    <h3 class="text-danger">@Error</h3>
+}
+else
+{
+    <h3 class="mb-3">Product Details</h3>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <img class="img-fluid" src="@Product.ImageUrl">
+        </div>
+        <div class="col-md-6 mb-4">
+            <h3>@Product.Name</h3>
+            <p class="mb-4">@Product.Description</p
+            <p class="mb-4">
+            <b>@Product.Price.ToString("C")&nbsp;(@Product.Quantity items in stock)</b>
+                </p>
+        </div>
+    </div>
+}

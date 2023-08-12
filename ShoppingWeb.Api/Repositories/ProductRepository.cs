@@ -12,9 +12,24 @@ namespace ShoppingWeb.Api.Repositories
         {
             _dbContext = dbContext;
         }
-        public Task<Product> GetProductById(int id)
+        public async Task<ProductDto?> GetProductById(int id)
         {
-            var product = _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _dbContext.Products.Include(p => p.Category)
+                .Where(p => p.Id == id)
+                .Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    Category = p.Category.Name,
+                    CategoryId = p.CategoryId,
+                    Price = p.Price,
+                    Description = p.Description,
+                    ImageUrl = p.ImageUrl,
+                    IsDeleted = p.IsDeleted,
+                    Name = p.Name,
+                    Quantity = p.Quantity
+
+                })
+                .FirstOrDefaultAsync();
             return product;
         }
 

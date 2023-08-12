@@ -19,8 +19,34 @@ namespace ShoppingWeb.Web.Services
                 var products = await _httpClient.GetFromJsonAsync<IEnumerable<ProductDto>>("/api/Product/get-items");
                 return products;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                throw;
+            }
+        }
+
+        public async Task<ProductDto> GetProduct(int productId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"/api/Product/{productId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default(ProductDto);
+                    }
+
+                    return await response.Content.ReadFromJsonAsync<ProductDto>();
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
                 throw;
             }
         }

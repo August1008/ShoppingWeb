@@ -25,5 +25,19 @@ namespace ShoppingWeb.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet("{productId:int}")]
+        public async Task<IActionResult> GetProduct(int productId)
+        {
+            try
+            {
+                var product = await _productRepository.GetProductById(productId);
+                return product != null ? Ok(product) : NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

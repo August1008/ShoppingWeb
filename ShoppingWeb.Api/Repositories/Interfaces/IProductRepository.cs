@@ -7,6 +7,6 @@ namespace ShoppingWeb.Api.Repositories
     {
         public Task<IEnumerable<Product>> GetProducts();
         public Task<IEnumerable<ProductDto>> GetProductDtos();
-        public Task<Product> GetProductById(int id);
+        public Task<ProductDto?> GetProductById(int id);
     }
 }
