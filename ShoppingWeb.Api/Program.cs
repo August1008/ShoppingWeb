@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ShoppingWeb.Api.DataContext;
 using ShoppingWeb.Api.Repositories;
-
+using ShoppingWeb.Api.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,7 @@ builder.Services.AddDbContextPool<ShoppingWebDataContext>(options =>
 );
 
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 var app = builder.Build();
 
 app.UseCors("DefaultPolicy");

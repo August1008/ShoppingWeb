@@ -12,4 +12,5 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 //production
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://august-shoppingweb.azurewebsites.net") });
 builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 await builder.Build().RunAsync();

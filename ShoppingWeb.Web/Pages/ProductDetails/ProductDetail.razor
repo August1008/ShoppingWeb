@@ -19,10 +19,16 @@ else
         </div>
         <div class="col-md-6 mb-4">
             <h3>@Product.Name</h3>
-            <p class="mb-4">@Product.Description</p
+            <p class="mb-4">@Product.Description</p>
             <p class="mb-4">
             <b>@Product.Price.ToString("C")&nbsp;(@Product.Quantity items in stock)</b>
                 </p>
+                <button class="btn btn-outline-success" 
+                @onclick="() => AddItemToCartAsync(new CartItemToAddDto{
+                    CardId = 1,
+                    ProductId = Product.Id,
+                    Quantity = 1
+                    })">Add To Cart</button>
         </div>
     </div>
 }

@@ -1,0 +1,39 @@
+﻿@page "/Cart"
+@inherits ShoppingCartBase
+
+@if (ShoppingItems == null)
+{
+    <h3>loading...</h3>
+}
+else if (ErrorMessage != null)
+{
+    <h3 class="text-danger">@ErrorMessage</h3>
+}
+else
+{
+    <h3 class="mb-3">Shopping Cart</h3>
+    <div class="row mb-5">
+        <div class="col-md-9">
+            @foreach (var item in ShoppingItems)
+            {
+                <div class="row mb-4">
+                    <div class="col-md-4"> 
+                        <img src="@item.ImageUrl" width="300" class="img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        <span >@item.ProductName</span>
+                        <span>Price: @item.ProductPrice.ToString("C")</span>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-md-3">
+            <h5 class="mb-3">Cart Summary</h5>
+            <div class="mt-2">
+                <h5>Total - @ShoppingItems.Sum(item => item.ProductPrice)</h5>
+                <a href="#" class="btn btn-outline-success"><span class="oi oi-credit-card">&nbsp; Proceed to Checkout</span></a>
+                
+            </div>
+        </div>
+    </div>
+}

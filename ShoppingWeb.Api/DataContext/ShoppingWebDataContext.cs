@@ -266,13 +266,13 @@ namespace ShoppingWeb.Api.DataContext
             //Add users
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("92b237a2-05ab-4b1d-a232-982dce35a821"),
                 Username = "February"
 
             });
             modelBuilder.Entity<User>().HasData(new User
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("50e506a0-408a-40fd-815e-e30f31b01166"),
                 Username = "January"
 
             });
