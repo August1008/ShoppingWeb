@@ -22,7 +22,7 @@ namespace ShoppingWeb.Api.Controllers
             try
             {
                 var result = await shoppingCartRepository.GetAllItemsAsync(userId);
-                return Ok(result);
+                return result is not null ? Ok(result) : NoContent();
             }
             catch (Exception ex)
             {
@@ -43,6 +43,24 @@ namespace ShoppingWeb.Api.Controllers
                 return Ok(new { status = StatusCodes.Status200OK, data = result });
             }
             catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        
+        [HttpPost("delete-item")]
+        public async Task<IActionResult> DeleteItem([FromBody]int id)
+        {
+            try
+            {
+                var result = await shoppingCartRepository.DeleteItem(id);
+                if (result == null)
+                {
+                    return NoContent();
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

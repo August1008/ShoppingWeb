@@ -1,4 +1,5 @@
 ﻿@page "/Cart"
+@using ShoppingWeb.Web.Pages.Notifications
 @inherits ShoppingCartBase
 
 @if (ShoppingItems == null)
@@ -12,27 +13,35 @@ else if (ErrorMessage != null)
 else
 {
     <h3 class="mb-3">Shopping Cart</h3>
+    <DeleteNotification @ref="deleteNotification"></DeleteNotification>
     <div class="row mb-5">
         <div class="col-md-9">
             @foreach (var item in ShoppingItems)
             {
-                <div class="row mb-4">
-                    <div class="col-md-4"> 
-                        <img src="@item.ImageUrl" width="300" class="img-thumbnail">
+                <div class="row mb-4" >
+                    <div class="col-md-4">
+                        <a><img src="@item.ImageUrl" width="250" class="img-thumbnail"></a>
                     </div>
                     <div class="col-md-8">
-                        <span >@item.ProductName</span>
-                        <span>Price: @item.ProductPrice.ToString("C")</span>
+                        <h5>@item.ProductName</h5>
+                        <h6>Quantity: @item.Quantity</h6>
+                        <h6>Price: <strong>@item.ProductPrice.ToString("C")</strong></h6>
+                        <button class="btn btn-outline-danger"
+                        @onclick="() => DeleteItem(item.Id)">
+                            <span class="oi oi-trash"></span>&nbsp; Remove
+                        </button>
+
                     </div>
                 </div>
             }
+
         </div>
         <div class="col-md-3">
             <h5 class="mb-3">Cart Summary</h5>
             <div class="mt-2">
                 <h5>Total - @ShoppingItems.Sum(item => item.ProductPrice)</h5>
                 <a href="#" class="btn btn-outline-success"><span class="oi oi-credit-card">&nbsp; Proceed to Checkout</span></a>
-                
+
             </div>
         </div>
     </div>

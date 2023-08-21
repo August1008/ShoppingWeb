@@ -9,7 +9,7 @@ namespace ShoppingWeb.Api.Repositories.Interfaces
         Task<IEnumerable<CartItemDto>> GetItemsInCartAsync(int cardId);
         Task<CartItemDto> AddItemAsync(CartItemToAddDto cartItemToAdd);
         Task<CartItem> UpdateItemQuantityAsync(int quantity);
-        Task<CartItem> DeleteItem(int id);
+        Task<CartItemDeleteDto> DeleteItem(int id);
         Task<IEnumerable<CartItemDto>> GetAllItemsAsync(Guid userId);
     }
 }

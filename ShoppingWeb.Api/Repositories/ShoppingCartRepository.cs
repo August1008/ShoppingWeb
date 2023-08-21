@@ -38,7 +38,8 @@ namespace ShoppingWeb.Api.Repositories
                               where p.Id == result.Entity.Id
                               select new CartItemDto
                               {
-                                  CardId = result.Entity.Id,
+                                  Id = result.Entity.Id,
+                                  CardId = result.Entity.CartId,
                                   ProductId = p.Id,
                                   ProductName = p.Name,
                                   ProductPrice = p.Price,
@@ -49,15 +50,16 @@ namespace ShoppingWeb.Api.Repositories
             return null;
         }
 
-        public async Task<CartItem> DeleteItem(int id)
+        public async Task<CartItemDeleteDto?> DeleteItem(int id)
         {
             var cartItem = await _dbContext.CartItems.FindAsync(id);
             if (cartItem != null)
             {
                 var result = _dbContext.CartItems.Remove(cartItem);
                 await _dbContext.SaveChangesAsync();
+                return new CartItemDeleteDto { Id = cartItem.Id, ProductId = cartItem.ProductId, CartId = cartItem.CartId, Quantity = cartItem.Quantity };
             }
-            return cartItem;
+            return null;
         }
 
         public async Task<IEnumerable<CartItemDto>> GetAllItemsAsync(Guid userId)
@@ -70,6 +72,7 @@ namespace ShoppingWeb.Api.Repositories
                           where c.UserId == userId
                           select new CartItemDto
                           {
+                              Id = ci.Id,
                               CardId = ci.CartId,
                               ProductId = ci.ProductId,
                               Quantity = ci.Quantity,
@@ -97,6 +100,7 @@ namespace ShoppingWeb.Api.Repositories
                           where ci.CartId == cardId
                           select new CartItemDto
                           {
+                              Id = ci.Id,
                               CardId = ci.Id,
                               ProductId = ci.ProductId,
                               ProductName = p.Name,

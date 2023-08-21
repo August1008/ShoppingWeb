@@ -18,7 +18,7 @@ namespace ShoppingWeb.Api.Controllers
             try
             {
                 var products = await _productRepository.GetProductDtos();
-                return products != null ? Ok(products) : NotFound();
+                return products != null ? Ok(products) : NoContent();
             }
             catch(Exception ex)
             {
@@ -32,7 +32,7 @@ namespace ShoppingWeb.Api.Controllers
             try
             {
                 var product = await _productRepository.GetProductById(productId);
-                return product != null ? Ok(product) : NotFound();
+                return product != null ? Ok(product) : NoContent();
             }
             catch (Exception ex)
             {
