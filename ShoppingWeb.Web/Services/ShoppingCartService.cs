@@ -10,6 +10,8 @@ namespace ShoppingWeb.Web.Services
     {
         private readonly HttpClient httpClient;
 
+        public event Action<int> OnShoppingCartChanged;
+
         public ShoppingCartService(HttpClient httpClient)
         {
             this.httpClient = httpClient;
@@ -84,6 +86,14 @@ namespace ShoppingWeb.Web.Services
             catch (Exception ex)
             {
                 throw;
+            }
+        }
+
+        public void RaiseEventOnShoppingCartChanged(int quantity)
+        {
+            if (OnShoppingCartChanged != null)
+            {
+                OnShoppingCartChanged.Invoke(quantity);
             }
         }
     }

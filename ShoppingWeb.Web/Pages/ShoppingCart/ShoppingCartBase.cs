@@ -11,6 +11,7 @@ namespace ShoppingWeb.Web.Pages.ShoppingCart
         [Inject]
         public IShoppingCartService _shoppingCartService { get; set; }
         public List<CartItemDto> ShoppingItems { get; set; }
+        public int TotalQuantity { get; set; }
         public string ErrorMessage { get; set; }
 
         #region notify when delete
@@ -25,8 +26,9 @@ namespace ShoppingWeb.Web.Pages.ShoppingCart
             {
                 var result = await _shoppingCartService.GetCartItems(new Guid("92b237a2-05ab-4b1d-a232-982dce35a821"));
                 ShoppingItems = result.ToList();
+                RePopulateTotalItem();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
@@ -60,10 +62,15 @@ namespace ShoppingWeb.Web.Pages.ShoppingCart
                 deleteNotification.ShowFailureDeleteNotification();
 
             }
+            RePopulateTotalItem();
             
         }
 
-
+        public void RePopulateTotalItem()
+        {
+            TotalQuantity = ShoppingItems.Sum(i => i.Quantity);
+            _shoppingCartService.RaiseEventOnShoppingCartChanged(TotalQuantity);
+        }
         
     }
 }
