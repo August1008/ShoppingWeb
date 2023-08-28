@@ -19,6 +19,112 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
+    <script>
+        const baseURL = {
+            sandbox: "https://api-m.sandbox.paypal.com",
+            production: "https://api-m.paypal.com",
+        };
+        const CLIENT_ID =
+            "ASVzpOR6sB4R6nDreLESTeqGroCI2vzbW8G-BqA4ASCewM0F0agWgtxXtOrInxUWlWt59tdk1yGxj581";
+        const APP_SECRET =
+            "EAGaqIIDhCfRaICS8RcwaGc3lCXY7pg1AKOWutESM9LnrAiUOXt9nkvA4MUC8Q99P-8JJSiIkQMuXaKK";
+
+        async function GenerateToken() {
+            const auth = btoa(`${CLIENT_ID}:${APP_SECRET}`);
+            const response = await fetch(`${baseURL.sandbox}/v1/oauth2/token`, {
+                method: "POST",
+                body: "grant_type=client_credentials",
+                headers: {
+                    Authorization: `Basic ${auth}`,
+                    Content: `application/x-www-form-urlencoded`,
+                },
+            });
+            const data = await response.json();
+            return data.access_token;
+
+        };
+    </script>
+    <!-- Replace "test" with your own sandbox Business account app client ID -->
+    <script src="https://www.paypal.com/sdk/js?client-id=ASVzpOR6sB4R6nDreLESTeqGroCI2vzbW8G-BqA4ASCewM0F0agWgtxXtOrInxUWlWt59tdk1yGxj581&currency=USD"></script>
+    <!-- Set up a container element for the button -->
+
+    <script>
+        function renderPaypalButton() {
+            paypal
+                .Buttons({
+                    // Order is created on the server and the order id is returned
+                    async createOrder() {
+                        const accessToken = await GenerateToken();
+                        return await fetch("https://api-m.sandbox.paypal.com/v2/checkout/orders", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization:
+                                    `Bearer ${accessToken}`,
+                            },
+                            // use the "body" param to optionally pass additional order information
+                            // like product skus and quantities
+                            body: JSON.stringify({
+                                intent: "CAPTURE",
+                                purchase_units: [
+                                    {
+                                        orderID: "123123",
+                                        reference_id: "d9f80740-38f0-11e8-b467-0ed5f89f718b",
+                                        amount: { currency_code: "USD", value: "100.00" },
+                                    },
+                                ],
+                                payment_source: {
+                                    paypal: {
+                                        experience_context: {
+                                            payment_method_preference: "IMMEDIATE_PAYMENT_REQUIRED",
+                                            brand_name: "EXAMPLE INC",
+                                            locale: "en-US",
+                                            landing_page: "LOGIN",
+                                            user_action: "PAY_NOW",
+
+                                        },
+                                    },
+                                },
+                            }),
+                        })
+                            .then((response) => response.json())
+                            .then((order) => order.id);
+                    },
+                    // Finalize the transaction on the server after payer approval
+                    async onApprove(data) {
+                        const accessToken = await GenerateToken();
+                        return await fetch(`https://api-m.sandbox.paypal.com/v2/checkout/orders/${data.orderID}/capture`, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${accessToken}`
+                            },
+
+                        })
+                            .then((response) => response.json())
+                            .then((orderData) => {
+                                // Successful capture! For dev/demo purposes:
+                                console.log(
+                                    "Capture result",
+                                    orderData,
+                                    JSON.stringify(orderData, null, 2)
+                                );
+                                const transaction =
+                                    orderData.purchase_units[0].payments.captures[0];
+                                alert(
+                                    `Transaction ${transaction.status}: ${transaction.id}\n\nSee console for all available details`
+                                );
+                                // When ready to go live, remove the alert and show a success message within this page. For example:
+                                const element = document.getElementById('paypal-button-container');
+                                element.innerHTML = '<h3>Thank you for your payment!</h3>';
+                                // Or go to another URL:  window.location.href = 'thank_you.html';
+                            });
+                    },
+                })
+                .render("#paypal-button-container");
+        }
+    </script>
     <script src="_framework/blazor.webassembly.js"></script>
 </body>
 
